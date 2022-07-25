@@ -1,24 +1,28 @@
-import gensim
-import matplotlib.pyplot as plt
-import multiprocessing
-import nltk
-import numpy as np
-import pandas as pd
-import pdb
-import random
-from gensim.models import FastText
-# define training data
+from used_repos.personal.Cross_domain_NER.src.common.util import get_all_data
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import VotingClassifier
 from gensim.test.utils import common_texts
-from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.pipeline import Pipeline
 from sklearn.metrics import f1_score
-from sklearn.svm import SVC
-from sklearn.tree import DecisionTreeClassifier
+from gensim.models import FastText
+from nltk.corpus import stopwords
 from xgboost import XGBClassifier
+from sklearn.svm import SVC
 
-from src.common.util import *
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+
+import multiprocessing
+import gensim
+import random
+import nltk
+import pdb
+
 
 stop_words = set(stopwords.words('english'))
 
@@ -51,11 +55,6 @@ def train_word2vec(docs):
                      workers=multiprocessing.cpu_count())
     model.save("checkpoints/fasttext.model")
     print("saved model")
-
-
-from sklearn.ensemble import VotingClassifier
-
-from sklearn.pipeline import Pipeline
 
 
 def load_word2vec():
@@ -150,7 +149,6 @@ def main():
     X = np.concatenate((X_train, X_test), axis=0)
     y = np.concatenate((y_train, y_test), axis=0)
     print(X.shape, y.shape)
-    from sklearn.model_selection import train_test_split
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y)
     classifier_experiment(X_train, y_train, X_test, y_test)

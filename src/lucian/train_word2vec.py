@@ -1,26 +1,25 @@
-import gensim
-import matplotlib.pyplot as plt
-import multiprocessing
-import nltk
-import numpy as np
-import pandas as pd
-import pdb
-import random
-from gensim.models import Word2Vec
-# define training data
+from used_repos.personal.Cross_domain_NER.src.common.util import get_data, get_all_data
+from sklearn.ensemble import RandomForestClassifier, VotingClassifier, Pipeline
+from sklearn.tree import DecisionTreeClassifier
 from gensim.test.utils import common_texts
-from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.ensemble import VotingClassifier
 from sklearn.metrics import f1_score
-from sklearn.pipeline import Pipeline
-from sklearn.svm import SVC
-from sklearn.tree import DecisionTreeClassifier
+from gensim.models import Word2Vec
+from nltk.corpus import stopwords
 from xgboost import XGBClassifier
+from sklearn.svm import SVC
 
-from src.common.util import *
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+
+import multiprocessing
+import gensim
+import random
+import nltk
+import pdb
+
 
 stop_words = set(stopwords.words('english'))
 
@@ -66,7 +65,6 @@ def ensemble_voting(X_train, y_train, X_test, y_test):
         ('decision_tree', DecisionTreeClassifier(class_weight="balanced")),
         ('xgb', XGBClassifier())
     ]
-
     ensemble = Pipeline(steps=[("voter", VotingClassifier(estimators))])
     ensemble.fit(X_train, y_train)
     y_pred = ensemble.predict(X_test)

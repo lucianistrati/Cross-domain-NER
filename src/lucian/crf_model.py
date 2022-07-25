@@ -1,18 +1,21 @@
-import torch
-from TorchCRF import CRF
-from statistics import mean
-from src.common.util import get_all_data
-import torch.nn as an
-from numpy import vstack
 from sklearn.metrics import accuracy_score
-from torch.utils.data import Dataset
+from used_repos.personal.Cross_domain_NER.src.common.util import get_all_data
 from torch.utils.data import DataLoader
-from torch import Tensor
-from torch.optim import Adam
 from torch.nn import CrossEntropyLoss
+from torch.utils.data import Dataset
+from torch.optim import Adam
+from statistics import mean
+from TorchCRF import CRF
+from numpy import vstack
+from torch import Tensor
+from tqdm import tqdm
+
 import matplotlib.pyplot as plt
+import torch.nn as an
 import numpy as np
 
+import torch
+import pdb
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -20,6 +23,7 @@ vocab = dict()
 MAX_SEQ_LEN = 300
 BATCH_SIZE = 32
 NUM_LABELS = 16
+
 
 class LiRoDataset():
     def __init__(self):
@@ -42,12 +46,13 @@ def build_vocab(datapoints):
                 vocab[token] = cnt
                 cnt += 1
 
+
 def prepare_subset_for_crf(datapoints):
     global vocab
     X, y = [], []
 
     token_pad_value = 0
-    ner_id_pad_value = 0 # 16
+    ner_id_pad_value = 0  # 16
     seq_lens = []
 
     for datapoint in datapoints:
@@ -108,8 +113,6 @@ def prepare_data_for_crf():
     valid = data["valid"]
     test = data["test"]
 
-    train_valid = train + valid
-
     data_analysis(train)
     data_analysis(valid)
     data_analysis(test)
@@ -120,10 +123,6 @@ def prepare_data_for_crf():
     # X_test, y_test = prepare_subset_for_crf(test)
     return prepare_subset_for_crf(train + valid + test)
 
-from tqdm import tqdm
-import pdb
-
-# def get_class_weight(labels):
 
 def train_model(train_dl, crf_model):
     # define the optimization
@@ -132,7 +131,6 @@ def train_model(train_dl, crf_model):
     optimizer = Adam(crf_model.parameters())
     # enumerate epochs
     token_pad_value = 0
-    ner_id_pad_value = 0  # 16
     for epoch in tqdm(range(num_epochs)):
         # enumerate mini batches
         for i, (inputs, targets, seq_lens) in enumerate(train_dl):
@@ -158,8 +156,9 @@ def train_model(train_dl, crf_model):
             if hidden.shape[0] != BATCH_SIZE or targets.shape[0] != BATCH_SIZE or mask.shape[0] != BATCH_SIZE:
                 continue
             losses = crf_model.forward(h=hidden,
-                                     labels=targets,
-                                     mask=mask)
+                                       labels=targets,
+                                       mask=mask)
+            print(len(losses))
 
             yhat = crf_model.viterbi_decode(hidden, mask)
             # calculate loss
@@ -184,7 +183,6 @@ def train_model(train_dl, crf_model):
 
 def evaluate_model(test_dl, crf_model):
     token_pad_value = 0
-    ner_id_pad_value = 0  # 16
     predictions, actuals = list(), list()
     for i, (inputs, targets, seq_lens) in tqdm(enumerate(test_dl)):
         if inputs.shape[0] != BATCH_SIZE or targets.shape[0] != BATCH_SIZE:
@@ -211,7 +209,6 @@ def evaluate_model(test_dl, crf_model):
         yhat = yhat.detach().numpy()
         actual = targets.numpy()
 
-        # pdb.set_trace()
         # actual = actual.reshape((len(actual), 1))
         # # round to class values
         # yhat = yhat.round()
@@ -273,5 +270,6 @@ def main():
     example()
     train_crf_model()
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     main()

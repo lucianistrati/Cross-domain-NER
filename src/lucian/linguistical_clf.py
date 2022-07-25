@@ -1,27 +1,27 @@
-import gensim
-import matplotlib.pyplot as plt
-import multiprocessing
-import nltk
-import numpy as np
-import pandas as pd
-import pdb
-import random
-from gensim.models import Word2Vec
-# define training data
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from used_repos.personal.Cross_domain_NER.src.common.util import get_data, get_all_data
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import VotingClassifier
 from gensim.test.utils import common_texts
-from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.ensemble import VotingClassifier
-from sklearn.metrics import f1_score
-from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
-from sklearn.svm import SVC
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import f1_score
+from gensim.models import Word2Vec
+from nltk.corpus import stopwords
 from xgboost import XGBClassifier
+from sklearn.svm import SVC
 
-from src.common.util import *
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+
+import multiprocessing
+import gensim
+import random
+import nltk
+import pdb
 
 
 def document_preprocess(document):
@@ -70,7 +70,7 @@ def embed(text, word2vec_model):
     return vector
 
 
-def create_train_test_data(data):
+def create_train_test_data(data, word2vec_model):
     train = data["train"]
     valid = data["valid"]
     test = data["test"]

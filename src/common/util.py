@@ -2,6 +2,7 @@ import json
 
 tag_to_id = dict()
 
+
 def get_data(filepath, change_ner_tags=False, change_ner_ids=False, first_n=None):
     """
     returns a list of dictionaries
@@ -66,7 +67,8 @@ def get_data(filepath, change_ner_tags=False, change_ner_ids=False, first_n=None
             # new_ner_ids = ner_ids
 
             # {'O': 0, 'PERSON': 1, 'QUANTITY': 23, 'NUMERIC': 25, 'NAT_REL_POL': 9, 'GPE': 5, 'DATETIME': 17,
-            # 'ORG': 3, 'PERIOD': 19, 'EVENT': 11, 'FACILITY': 29, 'ORDINAL': 27, 'LOC': 7, 'MONEY': 21, 'WORK_OF_ART': 15, 'LANGUAGE': 13}
+            # 'ORG': 3, 'PERIOD': 19, 'EVENT': 11, 'FACILITY': 29, 'ORDINAL': 27, 'LOC': 7, 'MONEY': 21,
+            # 'WORK_OF_ART': 15, 'LANGUAGE': 13}
 
             new_ner_tags = data[i]["ner_tags"]
 
@@ -84,15 +86,18 @@ def get_data(filepath, change_ner_tags=False, change_ner_ids=False, first_n=None
 
     return data, tag_to_id
 
+
 def get_all_data(change_ner_tags=False, change_ner_ids=False, first_n=None):
     global tag_to_id
     data = dict()
     filepaths = ["ronec/data/train.json", "ronec/data/valid.json", "ronec/data/test.json"]
     dataset_types = ["train", "valid", "test"]
     for filepath, dataset_type in zip(filepaths, dataset_types):
-        data[dataset_type], tag_to_id = get_data(filepath=filepath, change_ner_tags=change_ner_tags, change_ner_ids=change_ner_ids, first_n=first_n)
+        data[dataset_type], tag_to_id = get_data(filepath=filepath, change_ner_tags=change_ner_tags,
+                                                 change_ner_ids=change_ner_ids, first_n=first_n)
 
     return data, tag_to_id
+
 
 def main():
     data, tag_to_id = get_all_data(change_ner_tags=True, change_ner_ids=True)
@@ -114,7 +119,7 @@ def main():
     #    print(data['train'][0])
     print(data['valid'][0].keys())
     print(data['test'][0].keys())
-    print(len(data["train"]) + len(data["valid"])  + len(data["test"]))
+    print(len(data["train"]) + len(data["valid"]) + len(data["test"]))
     import random
     final_data = data["train"] + data["valid"] + data["test"]
 
@@ -131,20 +136,15 @@ def main():
     print(len(possible_ner_tags), possible_ner_tags)
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     main()
 
-
 """
-{"id": 5260, 
-
-"ner_tags": ["O", "B-EVENT", "I-EVENT", "O", "O", "O", "O", "B-ORG", "I-ORG", "O", "B-ORG", "I-ORG", 
-"I-ORG", "B-NUMERIC", "O", "B-NUMERIC", "O"], 
-
-"ner_ids": [0, 11, 12, 0, 0, 0, 0, 3, 4, 0, 3, 4, 4, 25, 0, 25, 0], 
-
-"tokens": ["În", "Cupa", "României", "la", "volei", "feminin", ":", "Dinamo", "București", "-", "C.S.U.", 
-"Politehnica-Tender", "Timișoara", "3", "-", "1", "."], 
-
+{"id": 5260,
+"ner_tags": ["O", "B-EVENT", "I-EVENT", "O", "O", "O", "O", "B-ORG", "I-ORG", "O", "B-ORG", "I-ORG",
+"I-ORG", "B-NUMERIC", "O", "B-NUMERIC", "O"],
+"ner_ids": [0, 11, 12, 0, 0, 0, 0, 3, 4, 0, 3, 4, 4, 25, 0, 25, 0],
+"tokens": ["În", "Cupa", "României", "la", "volei", "feminin", ":", "Dinamo", "București", "-", "C.S.U.",
+"Politehnica-Tender", "Timișoara", "3", "-", "1", "."],
 "space_after": [true, true, true, true, true, false, true, true, true, true, true, true, true, false, false, false, false]}
 """
