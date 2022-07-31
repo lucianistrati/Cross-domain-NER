@@ -66,9 +66,9 @@ def get_data(filepath, change_ner_tags=False, change_ner_ids=False, first_n=None
 
             # new_ner_ids = ner_ids
 
-            # {'O': 0, 'PERSON': 1, 'QUANTITY': 23, 'NUMERIC': 25, 'NAT_REL_POL': 9, 'GPE': 5, 'DATETIME': 17,
-            # 'ORG': 3, 'PERIOD': 19, 'EVENT': 11, 'FACILITY': 29, 'ORDINAL': 27, 'LOC': 7, 'MONEY': 21,
-            # 'WORK_OF_ART': 15, 'LANGUAGE': 13}
+            # {"O": 0, "PERSON": 1, "QUANTITY": 23, "NUMERIC": 25, "NAT_REL_POL": 9, "GPE": 5, "DATETIME": 17,
+            # "ORG": 3, "PERIOD": 19, "EVENT": 11, "FACILITY": 29, "ORDINAL": 27, "LOC": 7, "MONEY": 21,
+            # "WORK_OF_ART": 15, "LANGUAGE": 13}
 
             new_ner_tags = data[i]["ner_tags"]
 
@@ -107,18 +107,18 @@ def main():
 
     for key in data.keys():
         for i in range(len(data[key])):
-            del data[key][i]['start_char']
-            del data[key][i]['end_char']
-            del data[key][i]['reconstructed_document']
-            del data[key][i]['id']
-            for ner_id in data[key][i]['ner_ids']:
+            del data[key][i]["start_char"]
+            del data[key][i]["end_char"]
+            del data[key][i]["reconstructed_document"]
+            del data[key][i]["id"]
+            for ner_id in data[key][i]["ner_ids"]:
                 possible_ner_ids.add(ner_id)
-            for ner_tag in data[key][i]['ner_tags']:
+            for ner_tag in data[key][i]["ner_tags"]:
                 possible_ner_tags.add(ner_tag)
 
-    #    print(data['train'][0])
-    print(data['valid'][0].keys())
-    print(data['test'][0].keys())
+    #    print(data["train"][0])
+    print(data["valid"][0].keys())
+    print(data["test"][0].keys())
     print(len(data["train"]) + len(data["valid"]) + len(data["test"]))
     import random
     final_data = data["train"] + data["valid"] + data["test"]
@@ -127,7 +127,7 @@ def main():
 
     print(len(final_data))
     # print(final_data[-1])
-    with open('training_LUCI_26.json', 'w') as fout:
+    with open("training_LUCI_26.json", "w") as fout:
         json.dump(final_data, fout)
     print(final_data[0])
     print(final_data[-1])

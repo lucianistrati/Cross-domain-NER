@@ -61,7 +61,7 @@ word2vec_model = Word2Vec.load("checkpoints/word2vec.model")
 numpy_arrays_path = "data/numpy_data"
 # word2vec_model = Word2Vec.load("src/embeddings_train/fasttext.model")
 
-stop_words = set(stopwords.words('english'))
+stop_words = set(stopwords.words("english"))
 lemmatizer = WordNetLemmatizer()
 stemmer = PorterStemmer()
 GOOD = 0
@@ -73,7 +73,7 @@ RIGHT_TOKEN = -1
 RIGHT_RIGHT_TOKEN = -2
 
 all_languages = set(list(np.load(file="data/all_languages_list.npy", allow_pickle=True)))
-nlp = spacy.load('ro_core_news_sm')
+nlp = spacy.load("ro_core_news_sm")
 all_stopwords = set(list(nlp.Defaults.stop_words))
 
 
@@ -178,7 +178,7 @@ def count_capital_words(text, tokens=None):
 
 
 def count_punctuations(text):
-    punctuations = """}!"#/$%'(*]+,->.:);=?&@\^_`{<|~["""
+    punctuations = """}!'#/$%"(*]+,->.:);=?&@\^_`{<|~["""
     res = []
     for i in punctuations:
         res.append(text.count(i))
@@ -189,7 +189,7 @@ def count_punctuations(text):
 
 def get_word_frequency(target, tokens=None):
     tokens = word_tokenize(target) if tokens is None else tokens
-    return mean([word_frequency(token, 'ro') for token in tokens])
+    return mean([word_frequency(token, "ro") for token in tokens])
 
 
 def count_sws(text, tokens=None):
@@ -292,12 +292,12 @@ def main():
     end_offset = 56 + len("Wednesday")
     print(phrase[start_offset: end_offset])
 
-    for synset in wn.synsets('flexed'):
+    for synset in wn.synsets("flexed"):
         print(synset)
         print(dir(synset))
         for lemma in synset.lemmas():
             print(lemma.name())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

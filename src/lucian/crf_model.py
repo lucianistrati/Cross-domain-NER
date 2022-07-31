@@ -261,7 +261,7 @@ def train_crf_model():
 
     train_model(train_dl, crf_model)
     acc = evaluate_model(test_dl, crf_model)
-    print('Accuracy: %.3f' % acc)
+    print("Accuracy: %.3f" % acc)
 
 
 def main():

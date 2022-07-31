@@ -30,10 +30,10 @@ def document_preprocess(document):
 
 def ensemble_voting(X_train, y_train, X_test, y_test):
     estimators = [
-        ('svc', SVC(class_weight="balanced")),
-        ('random_forest', RandomForestClassifier(class_weight="balanced")),
-        ('decision_tree', DecisionTreeClassifier(class_weight="balanced")),
-        ('xgb', XGBClassifier())
+        ("svc", SVC(class_weight="balanced")),
+        ("random_forest", RandomForestClassifier(class_weight="balanced")),
+        ("decision_tree", DecisionTreeClassifier(class_weight="balanced")),
+        ("xgb", XGBClassifier())
     ]
 
     ensemble = Pipeline(steps=[("voter", VotingClassifier(estimators))])
@@ -44,10 +44,10 @@ def ensemble_voting(X_train, y_train, X_test, y_test):
 
 def train_classifier_head(X_train, y_train, X_test, y_test):
     clfs = [
-        ('logistic', SVC(class_weight="balanced")),
-        ('random_forest', RandomForestClassifier(class_weight="balanced")),
-        ('decision_tree', DecisionTreeClassifier(class_weight="balanced")),
-        ('xgb', XGBClassifier())
+        ("logistic", SVC(class_weight="balanced")),
+        ("random_forest", RandomForestClassifier(class_weight="balanced")),
+        ("decision_tree", DecisionTreeClassifier(class_weight="balanced")),
+        ("xgb", XGBClassifier())
     ]
     for (name, clf) in clfs:
         print(X_train.shape)
@@ -120,5 +120,5 @@ def main():
     classifier_experiment(X_train, y_train, X_test, y_test)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

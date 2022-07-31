@@ -125,5 +125,5 @@ def main():
     print(f1_score(y_pred, y_test, average="weighted"))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

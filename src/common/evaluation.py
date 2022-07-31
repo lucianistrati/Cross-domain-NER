@@ -6,9 +6,9 @@ import json
 def main():
     filepath = "small_data/data.json"
 
-    tag_to_id = {'O': 0, 'PERSON': 1, 'QUANTITY': 23, 'NUMERIC': 25, 'NAT_REL_POL': 9, 'GPE': 5, 'DATETIME': 17,
-                 'ORG': 3, 'PERIOD': 19, 'EVENT': 11, 'FACILITY': 29, 'ORDINAL': 27, 'LOC': 7, 'MONEY': 21,
-                 'WORK_OF_ART': 15, 'LANGUAGE': 13}
+    tag_to_id = {"O": 0, "PERSON": 1, "QUANTITY": 23, "NUMERIC": 25, "NAT_REL_POL": 9, "GPE": 5, "DATETIME": 17,
+                 "ORG": 3, "PERIOD": 19, "EVENT": 11, "FACILITY": 29, "ORDINAL": 27, "LOC": 7, "MONEY": 21,
+                 "WORK_OF_ART": 15, "LANGUAGE": 13}
     print(tag_to_id)
     tup_list = list(tag_to_id.items())
     print(tup_list)
@@ -19,9 +19,9 @@ def main():
         new_tag_to_id[tag] = i
     print(new_tag_to_id)
 
-    tag_to_id = {'O': 0, 'PERSON': 1, 'ORG': 2, 'GPE': 3, 'LOC': 4, 'NAT_REL_POL': 5, 'EVENT': 6, 'LANGUAGE': 7,
-                 'WORK_OF_ART': 8, 'DATETIME': 9, 'PERIOD': 10, 'MONEY': 11, 'QUANTITY': 12, 'NUMERIC': 13,
-                 'ORDINAL': 14, 'FACILITY': 15}
+    tag_to_id = {"O": 0, "PERSON": 1, "ORG": 2, "GPE": 3, "LOC": 4, "NAT_REL_POL": 5, "EVENT": 6, "LANGUAGE": 7,
+                 "WORK_OF_ART": 8, "DATETIME": 9, "PERIOD": 10, "MONEY": 11, "QUANTITY": 12, "NUMERIC": 13,
+                 "ORDINAL": 14, "FACILITY": 15}
     print(len(tag_to_id))
 
     with open(filepath, "r") as f:

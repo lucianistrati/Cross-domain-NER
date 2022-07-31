@@ -41,7 +41,7 @@ def main():
             new_cur_labels = []
             # print(cur_labels)
             for i in range(len(cur_labels)):
-                if cur_labels[i][0] == 'O':
+                if cur_labels[i][0] == "O":
                     continue
                 label = cur_labels[i][0]
                 if label in ["ORGANIZATION", "NUMERIC_VALUE"]:
@@ -76,14 +76,14 @@ def main():
             if key not in cur_pred_dict.keys():
                 if key >= len(doc["reconstructed_document"]):
                     continue
-                if doc["reconstructed_document"][key] != ' ':
+                if doc["reconstructed_document"][key] != " ":
                     cur_pred_dict[key] = tag_to_id["O"]
 
         for key in cur_pred_dict.keys():
             if key not in cur_gt_dict.keys():
                 if key >= len(doc["reconstructed_document"]):
                     continue
-                if doc["reconstructed_document"][key] != ' ':
+                if doc["reconstructed_document"][key] != " ":
                     cur_gt_dict[key] = tag_to_id["O"]
 
         common_keys = set(list(cur_pred_dict.keys())).intersection(set(list(cur_gt_dict.keys())))
@@ -124,10 +124,10 @@ def main():
     # print(len(dataset_labels.intersection(spacy_labels)) / len(dataset_labels.union(spacy_labels)))
     #
     # print(dataset_labels - spacy_labels)
-    # # {'O', 'NUMERIC', 'ORG'}, in
+    # # {"O", "NUMERIC", "ORG"}, in
     # print(spacy_labels - dataset_labels)
-    # # {'PRODUCT', 'ORGANIZATION', 'NUMERIC_VALUE'}
+    # # {"PRODUCT", "ORGANIZATION", "NUMERIC_VALUE"}
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

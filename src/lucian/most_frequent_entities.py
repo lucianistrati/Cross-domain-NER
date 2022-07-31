@@ -14,8 +14,8 @@ def main():
 
     dic = dict()
     for elem in all:
-        tokens = elem['tokens']
-        ner_tags = elem['ner_tags']
+        tokens = elem["tokens"]
+        ner_tags = elem["ner_tags"]
         new_word = ""
         for (token, ner_tag) in zip(tokens, ner_tags):
             if ner_tag == "O":
