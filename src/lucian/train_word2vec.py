@@ -1,5 +1,6 @@
 from used_repos.personal.Cross_domain_NER.src.common.util import get_data, get_all_data
 from sklearn.ensemble import RandomForestClassifier, VotingClassifier, Pipeline
+from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from gensim.test.utils import common_texts
 from nltk.stem import WordNetLemmatizer
@@ -152,11 +153,9 @@ def main():
     X = np.concatenate((X_train, X_test), axis=0)
     y = np.concatenate((y_train, y_test), axis=0)
     print(X.shape, y.shape)
-    from sklearn.model_selection import train_test_split
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y)
     classifier_experiment(X_train, y_train, X_test, y_test)
-    print("label 000000000000000000000000000000000000")
 
 
 if __name__ == "__main__":

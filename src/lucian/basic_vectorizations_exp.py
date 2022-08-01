@@ -1,10 +1,10 @@
+from used_repos.personal.Cross_domain_NER.src.common.util import get_all_data, get_data
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from stringkernels.kernels import polynomial_string_kernel
 from sklearn.model_selection import train_test_split
 from stringkernels.kernels import string_kernel
 from sklearn.metrics import f1_score
 from xgboost import XGBClassifier
-from used_repos.personal.Cross_domain_NER.src.common.util import get_all_data, get_data
 from sklearn.svm import SVC
 from statistics import mean
 from tqdm import tqdm
@@ -15,9 +15,9 @@ import numpy as np
 
 def string_kernel_training(X_train, y_train, X_val, y_val, kernel_option="string"):
     if kernel_option == "poly":
-        model = SVC(kernel=polynomial_string_kernel())  # 0.864
+        model = SVC(kernel=polynomial_string_kernel())
     elif kernel_option == "string":
-        model = SVC(kernel=string_kernel())  # 0.88
+        model = SVC(kernel=string_kernel())
     else:
         raise Exception(f"Wrong kernel string option {kernel_option}")
 
@@ -49,7 +49,7 @@ def main():
 
     analyzer = "char"
     ngram_range = (1, 1)
-    n = 2500
+    n = 2_500
     # cv = CountVectorizer(analyzer=analyzer, ngram_range=ngram_range)
     cv = TfidfVectorizer(analyzer=analyzer, ngram_range=ngram_range)
     X_train, X_test, y_train, y_test = [], [], [], []
