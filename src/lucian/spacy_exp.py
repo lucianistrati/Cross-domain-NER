@@ -1,5 +1,5 @@
+from used_repos.personal.aggregated_personal_repos.Cross_domain_NER.src.common.util import get_all_data
 from sklearn.metrics import f1_score
-from used_repos.personal.Cross_domain_NER.src.common.util import get_all_data
 from statistics import mean
 from tqdm import tqdm
 

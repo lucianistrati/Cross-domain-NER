@@ -1,4 +1,4 @@
-from used_repos.personal.Cross_domain_NER.src.common.util import get_all_data, get_data
+from used_repos.personal.aggregated_personal_repos.Cross_domain_NER.src.common.util import get_all_data, get_data
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from stringkernels.kernels import polynomial_string_kernel
 from sklearn.model_selection import train_test_split

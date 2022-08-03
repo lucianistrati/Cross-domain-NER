@@ -1,4 +1,4 @@
-from used_repos.personal.Cross_domain_NER.src.common.util import get_all_data
+from used_repos.personal.aggregated_personal_repos.Cross_domain_NER.src.common.util import get_all_data
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier

@@ -5,13 +5,13 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from nltk.tokenize import TreebankWordTokenizer as twt
 from wordsegment import load as load_wordsegment
 from sklearn.metrics import mean_absolute_error
-from statistics import mean, median, std
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 from nltk.corpus import wordnet as wn
 from sklearn.pipeline import Pipeline
 from sklearn.decomposition import PCA
 from matplotlib import pyplot as plt
+from statistics import mean, median
 from wordfreq import word_frequency
 from collections import defaultdict
 from nltk.stem import PorterStemmer
@@ -48,22 +48,31 @@ load_wordsegment()
 money_symbols = ["$", "£", "€", "lei", "RON", "USD", "EURO", "dolari", "lire", "yeni"]
 roman_numerals = "XLVDCMI"
 
-inflect = inflect.engine()
+def load_inflection_engine():
+    return inflect.engine()
 
 
 textstat.set_lang("en")
 
 
 PAD_TOKEN = "__PAD__"
-word2vec_model = Word2Vec.load("checkpoints/word2vec.model")
+def load_word2vec_model():
+    return Word2Vec.load("checkpoints/word2vec.model")
 
 
 numpy_arrays_path = "data/numpy_data"
 # word2vec_model = Word2Vec.load("src/embeddings_train/fasttext.model")
 
-stop_words = set(stopwords.words("english"))
-lemmatizer = WordNetLemmatizer()
-stemmer = PorterStemmer()
+def load_stopwords():
+    return set(stopwords.words("english"))
+
+
+def load_lemmatizer():
+    return WordNetLemmatizer()
+
+
+def load_stemmer():
+    return PorterStemmer()
 GOOD = 0
 ERRORS = 0
 
@@ -72,9 +81,16 @@ LEFT_TOKEN = -3
 RIGHT_TOKEN = -1
 RIGHT_RIGHT_TOKEN = -2
 
-all_languages = set(list(np.load(file="data/all_languages_list.npy", allow_pickle=True)))
-nlp = spacy.load("ro_core_news_sm")
-all_stopwords = set(list(nlp.Defaults.stop_words))
+def load_all_languages():
+    all_languages = set(list(np.load(file="data/all_languages_list.npy", allow_pickle=True)))
+
+
+def load_nlp():
+    nlp = spacy.load("ro_core_news_sm")
+
+
+def load_all_stopwords():
+    all_stopwords = set(list(nlp.Defaults.stop_words))
 
 
 def is_there_a_language(text):

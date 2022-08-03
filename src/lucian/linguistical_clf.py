@@ -1,6 +1,6 @@
+from used_repos.personal.aggregated_personal_repos.Cross_domain_NER.src.common.util import get_data, get_all_data
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from used_repos.personal.Cross_domain_NER.src.common.util import get_data, get_all_data
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import VotingClassifier
 from gensim.test.utils import common_texts
