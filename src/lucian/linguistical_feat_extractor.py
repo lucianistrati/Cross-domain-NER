@@ -42,26 +42,28 @@ import csv
 import pdb
 import os
 
-
+textstat.set_lang("en")
 load_wordsegment()
-
+PAD_TOKEN = "__PAD__"
 money_symbols = ["$", "£", "€", "lei", "RON", "USD", "EURO", "dolari", "lire", "yeni"]
 roman_numerals = "XLVDCMI"
+GOOD = 0
+ERRORS = 0
+LEFT_LEFT_TOKEN = -4
+LEFT_TOKEN = -3
+RIGHT_TOKEN = -1
+RIGHT_RIGHT_TOKEN = -2
+numpy_arrays_path = "data/numpy_data"
+# word2vec_model = Word2Vec.load("src/embeddings_train/fasttext.model")
+
 
 def load_inflection_engine():
     return inflect.engine()
 
 
-textstat.set_lang("en")
-
-
-PAD_TOKEN = "__PAD__"
 def load_word2vec_model():
     return Word2Vec.load("checkpoints/word2vec.model")
 
-
-numpy_arrays_path = "data/numpy_data"
-# word2vec_model = Word2Vec.load("src/embeddings_train/fasttext.model")
 
 def load_stopwords():
     return set(stopwords.words("english"))
@@ -73,27 +75,24 @@ def load_lemmatizer():
 
 def load_stemmer():
     return PorterStemmer()
-GOOD = 0
-ERRORS = 0
 
-LEFT_LEFT_TOKEN = -4
-LEFT_TOKEN = -3
-RIGHT_TOKEN = -1
-RIGHT_RIGHT_TOKEN = -2
 
 def load_all_languages():
     all_languages = set(list(np.load(file="data/all_languages_list.npy", allow_pickle=True)))
+    return all_languages
 
 
 def load_nlp():
     nlp = spacy.load("ro_core_news_sm")
+    return nlp
 
 
-def load_all_stopwords():
+def load_all_stopwords(nlp):
     all_stopwords = set(list(nlp.Defaults.stop_words))
+    return all_stopwords
 
 
-def is_there_a_language(text):
+def is_there_a_language(text, all_languages: List[str]):
     for lang in all_languages:
         if lang in text:
             return True
@@ -105,7 +104,7 @@ def might_be_feminine_surname(text):
     return text.endswith("ei") or text.endswith("a")
 
 
-def get_stopwords_pct(text):
+def get_stopwords_pct(text, all_stopwords: List[str]):
     tokens = set(word_tokenize(text))
     return len(tokens.intersection(all_stopwords)) / len(tokens)
 
@@ -208,7 +207,7 @@ def get_word_frequency(target, tokens=None):
     return mean([word_frequency(token, "ro") for token in tokens])
 
 
-def count_sws(text, tokens=None):
+def count_sws(text, tokens=None, stop_words=List[str]):
     if tokens is None:
         tokens = word_tokenize(text)
     return len([tok for tok in tokens if tok.lower() in stop_words])
@@ -284,7 +283,7 @@ def get_ner_tags(token, doc, nlp_doc, index):
     return feats
 
 
-def get_paper_features(token, document, index):
+def get_paper_features(token, document, index, nlp):
     nlp_doc = nlp(document)
     doc = document
     # import pdb
