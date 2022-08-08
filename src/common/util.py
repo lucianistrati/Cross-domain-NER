@@ -2,6 +2,22 @@ import json
 
 tag_to_id = dict()
 
+# {"O": 0, "PERSON": 1, "QUANTITY": 23, "NUMERIC": 25, "NAT_REL_POL": 9, "GPE": 5, "DATETIME": 17,
+# "ORG": 3, "PERIOD": 19, "EVENT": 11, "FACILITY": 29, "ORDINAL": 27, "LOC": 7, "MONEY": 21,
+# "WORK_OF_ART": 15, "LANGUAGE": 13}
+
+
+def get_document_start_end_chars(document, tokens, spaces_after):
+    for (token, space_after) in zip(tokens, spaces_after):
+        start_char = len(document)
+        document += token
+        if space_after:
+            document += " "
+        end_char = len(document)
+        start_chars.append(start_char)
+        end_chars.append(end_char)
+    return document, start_chars, end_chars
+
 
 def get_data(filepath, change_ner_tags=False, change_ner_ids=False, first_n=None):
     """
@@ -31,17 +47,9 @@ def get_data(filepath, change_ner_tags=False, change_ner_ids=False, first_n=None
 
         tokens = datapoint["tokens"]
         spaces_after = datapoint["space_after"]
-        document = ""
-        start_chars = []
-        end_chars = []
-        for (token, space_after) in zip(tokens, spaces_after):
-            start_char = len(document)
-            document += token
-            if space_after:
-                document += " "
-            end_char = len(document)
-            start_chars.append(start_char)
-            end_chars.append(end_char)
+
+        document = datapoint["datapoint"]
+        document, start_chars, end_chars = get_document_start_end_chars(document, tokens, spaces_after)
 
         if change_ner_tags:
             new_ner_tags = []
@@ -64,15 +72,8 @@ def get_data(filepath, change_ner_tags=False, change_ner_ids=False, first_n=None
                 new_ner_ids.append(ner_id)
             data[i]["ner_ids"] = new_ner_ids
 
-            # new_ner_ids = ner_ids
-
-            # {"O": 0, "PERSON": 1, "QUANTITY": 23, "NUMERIC": 25, "NAT_REL_POL": 9, "GPE": 5, "DATETIME": 17,
-            # "ORG": 3, "PERIOD": 19, "EVENT": 11, "FACILITY": 29, "ORDINAL": 27, "LOC": 7, "MONEY": 21,
-            # "WORK_OF_ART": 15, "LANGUAGE": 13}
-
             new_ner_tags = data[i]["ner_tags"]
 
-            # print(new_ner_tags, new_ner_ids)
             for (new_ner_tag, new_ner_id) in zip(new_ner_tags, new_ner_ids):
                 if new_ner_tag not in tag_to_id.keys():
                     tag_to_id[new_ner_tag] = new_ner_id

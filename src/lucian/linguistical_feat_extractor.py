@@ -78,7 +78,7 @@ def load_stemmer():
 
 
 def load_all_languages():
-    all_languages = set(list(np.load(file="data/all_languages_list.npy", allow_pickle=True)))
+    all_languages = set(list(np.load(file="data/massive_all_4749_languages.npy", allow_pickle=True)))
     return all_languages
 
 

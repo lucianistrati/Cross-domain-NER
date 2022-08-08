@@ -1,3 +1,5 @@
+from used_repos.personal.aggregated_personal_repos.Cross_domain_NER.src.lucian.linguistical_feat_extractor import \
+    get_paper_features
 from used_repos.personal.aggregated_personal_repos.Cross_domain_NER.src.common.util import get_all_data, get_data
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from stringkernels.kernels import polynomial_string_kernel
@@ -35,28 +37,19 @@ def string_kernel_training(X_train, y_train, X_val, y_val, kernel_option="string
     print("String kernel score:", f1_score(y_pred, y_val, average="weighted"))
 
 
-def main():
-    data, tag_to_id = get_all_data(change_ner_tags=True, change_ner_ids=True)
-    import pdb
-    pdb.set_trace()
-    train = data["train"]
-    valid = data["valid"]
-    test = data["test"]
-    # cv char 1,1 -> 0.42
-    # cv char 1,2 -> 0.55
-    # tfidf char (1, 2) -> 0.61
-    # tfidf char (1, 1) -> 0.42
+def convert(X_train, X_train_str, X_test, X_test_str, y_train, y_test):
+    X_train = np.array(X_train)
+    X_train_str = np.array(X_train_str)
+    X_test = np.array(X_test)
+    X_test_str = np.array(X_test_str)
+    y_train = np.array(y_train)
+    y_test = np.array(y_test)
 
-    analyzer = "char"
-    ngram_range = (1, 1)
-    n = 2_500
-    # cv = CountVectorizer(analyzer=analyzer, ngram_range=ngram_range)
-    cv = TfidfVectorizer(analyzer=analyzer, ngram_range=ngram_range)
-    X_train, X_test, y_train, y_test = [], [], [], []
-    use_linguistical_features = True
-    from used_repos.personal.Cross_domain_NER.src.lucian.linguistical_feat_extractor import get_paper_features
+    return X_train, X_train_str, X_test, X_test_str, y_train, y_test
+
+
+def build_train():
     X_train_str = []
-    X_test_str = []
     for doc in tqdm((train + valid)[:n // 10]):
         tokens = doc["tokens"]
         ner_ids = doc["ner_ids"]
@@ -69,7 +62,10 @@ def main():
             else:
                 X_train.append(token)
             y_train.append(ner_id)
+    return X_train, X_train_str, y_train
 
+
+def build_test():
     for doc in tqdm(test[:n // 40]):
         tokens = doc["tokens"]
         ner_ids = doc["ner_ids"]
@@ -82,13 +78,34 @@ def main():
             else:
                 X_test.append(token)
             y_test.append(ner_id)
+    return X_test, X_test_str, y_test
 
-    X_train = np.array(X_train)
-    X_train_str = np.array(X_train_str)
-    X_test = np.array(X_test)
-    X_test_str = np.array(X_test_str)
-    y_train = np.array(y_train)
-    y_test = np.array(y_test)
+
+"""
+cv char 1,1 -> 0.42
+cv char 1,2 -> 0.55
+tfidf char (1, 2) -> 0.61
+tfidf char (1, 1) -> 0.42
+"""
+def main():
+    data, tag_to_id = get_all_data(change_ner_tags=True, change_ner_ids=True)
+    train = data["train"]
+    valid = data["valid"]
+    test = data["test"]
+
+    analyzer = "char"
+    ngram_range = (1, 1)
+    n = 2_500
+    # cv = CountVectorizer(analyzer=analyzer, ngram_range=ngram_range)
+    cv = TfidfVectorizer(analyzer=analyzer, ngram_range=ngram_range)
+    X_train, X_test, y_train, y_test = [], [], [], []
+    use_linguistical_features = True
+
+    X_train, X_train_str, y_train = build_train()
+    X_test, X_test_str, y_test = build_test()
+
+    X_train, X_train_str, X_test, X_test_str, y_train, y_test = \
+        convert(X_train, X_train_str, X_test, X_test_str, y_train, y_test)
 
     # string_kernel_training(np.array(X_train), np.array(y_train), np.array(X_test), np.array(y_test))
     if not use_linguistical_features:

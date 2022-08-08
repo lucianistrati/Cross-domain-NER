@@ -14,6 +14,36 @@ def finetune_spacy_engine():
     pass
 
 
+def vectorize(cur_labels):
+    new_cur_labels = []
+    # print(cur_labels)
+    for i in range(len(cur_labels)):
+        if cur_labels[i][0] == "O":
+            continue
+        label = cur_labels[i][0]
+        if label in ["ORGANIZATION", "NUMERIC_VALUE"]:
+            label = spacy_to_dataset_labels[label]
+        new_cur_labels.append((tag_to_id[label], cur_labels[i][1], cur_labels[i][2]))
+    return new_cur_labels
+
+
+def set_gt_dict(cur_gt_labels):
+    for cur_gt_label in cur_gt_labels:
+        s, e = cur_gt_label[1], cur_gt_label[2]
+        lbl = cur_gt_label[0]
+        for i in range(s, e + 1):
+            cur_gt_dict[i] = lbl
+    return cur_gt_dict
+
+def set_pred_dict(cur_pred_labels):
+    for cur_pred_label in cur_pred_labels:
+        s, e = cur_pred_label[1], cur_pred_label[2]
+        lbl = cur_pred_label[0]
+        for i in range(s, e + 1):
+            cur_pred_dict[i] = lbl
+    return cur_pred_dict
+
+
 def main():
     data, tag_to_id = get_all_data(change_ner_tags=True, change_ner_ids=True)
     test = data["test"]
@@ -37,38 +67,11 @@ def main():
 
             cur_pred_labels.append((spacy_label, ent.start_char, ent.end_char))
 
-        def vectorize(cur_labels):
-            new_cur_labels = []
-            # print(cur_labels)
-            for i in range(len(cur_labels)):
-                if cur_labels[i][0] == "O":
-                    continue
-                label = cur_labels[i][0]
-                if label in ["ORGANIZATION", "NUMERIC_VALUE"]:
-                    label = spacy_to_dataset_labels[label]
-                new_cur_labels.append((tag_to_id[label], cur_labels[i][1], cur_labels[i][2]))
-            return new_cur_labels
-
         cur_gt_labels = vectorize(cur_gt_labels)
         cur_pred_labels = vectorize(cur_pred_labels)
-        # print(len(cur_gt_labels), len(cur_pred_labels))
-        # print(cur_pred_labels)
-        # print(cur_gt_labels)
 
-        cur_pred_dict = dict()
-        cur_gt_dict = dict()
-
-        for cur_gt_label in cur_gt_labels:
-            s, e = cur_gt_label[1], cur_gt_label[2]
-            lbl = cur_gt_label[0]
-            for i in range(s, e + 1):
-                cur_gt_dict[i] = lbl
-
-        for cur_pred_label in cur_pred_labels:
-            s, e = cur_pred_label[1], cur_pred_label[2]
-            lbl = cur_pred_label[0]
-            for i in range(s, e + 1):
-                cur_pred_dict[i] = lbl
+        cur_pred_dict = set_pred_dict(cur_pred_labels)
+        cur_gt_dict = set_gt_dict(cur_gt_labels)
 
         # print(len(cur_gt_dict), len(cur_pred_dict))
 
@@ -93,40 +96,13 @@ def main():
         cur_gt_dict = sorted(cur_gt_dict.items())
         cur_pred_dict = sorted(cur_pred_dict.items())
 
-        # print(cur_gt_dict, len(cur_gt_dict))
-        # print()
-        # print(cur_pred_dict, len(cur_pred_dict))
-
         final_gt_labels = [elem[1] for elem in cur_gt_dict]
         final_pred_labels = [elem[1] for elem in cur_pred_dict]
 
-        # print(len(final_pred_labels), len(final_gt_labels), len(doc["reconstructed_document"]))
-
         scores.append(f1_score(final_pred_labels, final_gt_labels, average="weighted"))
-        # print(scores[-1])
 
     print(mean(scores))
-    # print(cur_gt_dict)
-    # print(cur_pred_dict)
-    # assert len(cur_gt_dict) == len(cur_pred_dict)
 
-    # print(ent.text, ent.label_)
-    # print(ent.start_char, ent.end_char, ent.text, doc["reconstructed_document"][ent.start_char:ent.end_char])
-
-    #         spacy_labels.add(ent.label_)
-    #         vec.append([ent.text, ent.label_])
-    #     spacy_vecs.append(vec)
-    # np.save(file="used_repos.personal.Cross_domain_NER/src/lucian/spacy_vec.npy", arr=np.array(spacy_vecs),
-    # allow_pickle=True)
-    # print(len(dataset_labels), len(spacy_labels))
-    # print(len(dataset_labels.intersection(spacy_labels)))
-    # print(len(dataset_labels.union(spacy_labels)))
-    # print(len(dataset_labels.intersection(spacy_labels)) / len(dataset_labels.union(spacy_labels)))
-    #
-    # print(dataset_labels - spacy_labels)
-    # # {"O", "NUMERIC", "ORG"}, in
-    # print(spacy_labels - dataset_labels)
-    # # {"PRODUCT", "ORGANIZATION", "NUMERIC_VALUE"}
 
 
 if __name__ == "__main__":
