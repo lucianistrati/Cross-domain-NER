@@ -8,6 +8,14 @@ tag_to_id = dict()
 
 
 def get_document_start_end_chars(document, tokens, spaces_after):
+    """
+
+    :param document:
+    :param tokens:
+    :param spaces_after:
+    :return:
+    """
+    start_chars, end_chars = [], []
     for (token, space_after) in zip(tokens, spaces_after):
         start_char = len(document)
         document += token
@@ -89,6 +97,13 @@ def get_data(filepath, change_ner_tags=False, change_ner_ids=False, first_n=None
 
 
 def get_all_data(change_ner_tags=False, change_ner_ids=False, first_n=None):
+    """
+
+    :param change_ner_tags:
+    :param change_ner_ids:
+    :param first_n:
+    :return:
+    """
     global tag_to_id
     data = dict()
     filepaths = ["ronec/data/train.json", "ronec/data/valid.json", "ronec/data/test.json"]

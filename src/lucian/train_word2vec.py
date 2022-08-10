@@ -29,15 +29,28 @@ lemmatizer = WordNetLemmatizer()
 
 
 def document_preprocess(document):
+    """
+
+    :param document:
+    :return:
+    """
     return word_tokenize(document)
 
 
 def load_liro_dataset():
+    """
+
+    :return:
+    """
     docs = np.load(file="data/all_documents_list.npy", allow_pickle=True)
     return docs
 
 
 def prepare_data():
+    """
+
+    :return:
+    """
     data, _ = get_all_data(first_n=100)
     train = data["train"]
     valid = data["valid"]
@@ -50,6 +63,11 @@ def prepare_data():
 
 
 def train_word2vec(docs):
+    """
+
+    :param docs:
+    :return:
+    """
     model = Word2Vec(sentences=docs, vector_size=150, window=5, min_count=1,
                      workers=multiprocessing.cpu_count())  # an word2vec model is trained
     model.save("checkpoints/word2vec.model")  # checkpoint is saved
@@ -57,10 +75,22 @@ def train_word2vec(docs):
 
 
 def load_word2vec():
+    """
+
+    :return:
+    """
     return gensim.models.Word2Vec.load("checkpoints/word2vec.model")
 
 
 def ensemble_voting(X_train, y_train, X_test, y_test):
+    """
+
+    :param X_train:
+    :param y_train:
+    :param X_test:
+    :param y_test:
+    :return:
+    """
     estimators = [
         ("svc", SVC(class_weight="balanced")),
         ("random_forest", RandomForestClassifier(class_weight="balanced")),
@@ -74,6 +104,14 @@ def ensemble_voting(X_train, y_train, X_test, y_test):
 
 
 def train_classifier_head(X_train, y_train, X_test, y_test):
+    """
+
+    :param X_train:
+    :param y_train:
+    :param X_test:
+    :param y_test:
+    :return:
+    """
     clfs = [
         ("logistic", SVC(class_weight="balanced")),
         ("random_forest", RandomForestClassifier(class_weight="balanced")),
@@ -92,6 +130,12 @@ def train_classifier_head(X_train, y_train, X_test, y_test):
 
 
 def embed(text, word2vec_model):
+    """
+
+    :param text:
+    :param word2vec_model:
+    :return:
+    """
     try:
         vector = word2vec_model.wv[document_preprocess(text)]
         vector = np.mean(vector, axis=0)
@@ -102,6 +146,11 @@ def embed(text, word2vec_model):
 
 
 def create_train_test_data(word2vec_model):
+    """
+
+    :param word2vec_model:
+    :return:
+    """
     data, _ = get_all_data(first_n=100)
     train = data["train"]
     valid = data["valid"]
@@ -137,6 +186,14 @@ def create_train_test_data(word2vec_model):
 
 
 def classifier_experiment(X_train, y_train, X_test, y_test):
+    """
+
+    :param X_train:
+    :param y_train:
+    :param X_test:
+    :param y_test:
+    :return:
+    """
     train_classifier_head(X_train, y_train, X_test, y_test)
     ensemble_voting(X_train, y_train, X_test, y_test)
 

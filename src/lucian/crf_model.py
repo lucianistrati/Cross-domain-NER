@@ -26,7 +26,13 @@ NUM_LABELS = 16
 
 
 class LiRoDataset():
+    """
+
+    """
     def __init__(self):
+        """
+
+        """
         self.X, self.y, self.seq_lens = prepare_data_for_crf()
 
     def __getitem__(self, idx):
@@ -37,6 +43,11 @@ class LiRoDataset():
 
 
 def build_vocab(datapoints):
+    """
+
+    :param datapoints:
+    :return:
+    """
     global vocab
     cnt = 1
     for datapoint in datapoints:
@@ -48,6 +59,11 @@ def build_vocab(datapoints):
 
 
 def prepare_subset_for_crf(datapoints):
+    """
+
+    :param datapoints:
+    :return:
+    """
     global vocab
     X, y = [], []
 
@@ -76,6 +92,10 @@ def prepare_subset_for_crf(datapoints):
 
 
 def example():
+    """
+
+    :return:
+    """
     batch_size = 2
     sequence_size = 3
     num_labels = 5
@@ -94,6 +114,11 @@ def example():
 
 
 def data_analysis(datapoints):
+    """
+
+    :param datapoints:
+    :return:
+    """
     tokens_lens = []
     for datapoint in datapoints:
         tokens = datapoint["tokens"]
@@ -108,6 +133,10 @@ def data_analysis(datapoints):
 
 
 def prepare_data_for_crf():
+    """
+
+    :return:
+    """
     data, _ = get_all_data(change_ner_tags=True, change_ner_ids=True, first_n=100)
     train = data["train"]
     valid = data["valid"]
@@ -125,6 +154,12 @@ def prepare_data_for_crf():
 
 
 def train_model(train_dl, crf_model):
+    """
+
+    :param train_dl:
+    :param crf_model:
+    :return:
+    """
     # define the optimization
     criterion = CrossEntropyLoss()
     num_epochs = 10
@@ -182,6 +217,12 @@ def train_model(train_dl, crf_model):
 
 
 def evaluate_model(test_dl, crf_model):
+    """
+
+    :param test_dl:
+    :param crf_model:
+    :return:
+    """
     token_pad_value = 0
     predictions, actuals = list(), list()
     for i, (inputs, targets, seq_lens) in tqdm(enumerate(test_dl)):
@@ -239,6 +280,10 @@ def evaluate_model(test_dl, crf_model):
 
 
 def train_crf_model():
+    """
+
+    :return:
+    """
     liro_dataset = LiRoDataset()
     train_size = int(0.8 * len(liro_dataset))
     test_size = len(liro_dataset) - train_size

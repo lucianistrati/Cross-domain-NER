@@ -14,8 +14,19 @@ from tqdm import tqdm
 import pandas as pd
 import numpy as np
 
+import spacy
+
 
 def string_kernel_training(X_train, y_train, X_val, y_val, kernel_option="string"):
+    """
+
+    :param X_train:
+    :param y_train:
+    :param X_val:
+    :param y_val:
+    :param kernel_option:
+    :return:
+    """
     if kernel_option == "poly":
         model = SVC(kernel=polynomial_string_kernel())
     elif kernel_option == "string":
@@ -38,6 +49,16 @@ def string_kernel_training(X_train, y_train, X_val, y_val, kernel_option="string
 
 
 def convert(X_train, X_train_str, X_test, X_test_str, y_train, y_test):
+    """
+
+    :param X_train:
+    :param X_train_str:
+    :param X_test:
+    :param X_test_str:
+    :param y_train:
+    :param y_test:
+    :return:
+    """
     X_train = np.array(X_train)
     X_train_str = np.array(X_train_str)
     X_test = np.array(X_test)
@@ -48,15 +69,19 @@ def convert(X_train, X_train_str, X_test, X_test_str, y_train, y_test):
     return X_train, X_train_str, X_test, X_test_str, y_train, y_test
 
 
-def build_train():
-    X_train_str = []
+def build_train(train, valid, n, use_linguistical_features, nlp):
+    """
+
+    :return:
+    """
+    X_train, X_train_str, y_train = [], [], []
     for doc in tqdm((train + valid)[:n // 10]):
         tokens = doc["tokens"]
         ner_ids = doc["ner_ids"]
         document = doc["reconstructed_document"]
         for idx, (token, ner_id) in enumerate(zip(tokens, ner_ids)):
             if use_linguistical_features:
-                feats, string_feats = get_paper_features(token, document, idx)
+                feats, string_feats = get_paper_features(token, document, idx, nlp)
                 X_train.append(feats)
                 X_train_str.append(string_feats)
             else:
@@ -65,7 +90,12 @@ def build_train():
     return X_train, X_train_str, y_train
 
 
-def build_test():
+def build_test(test, n, use_linguistical_features):
+    """
+
+    :return:
+    """
+    X_test, X_test_str, y_test = [], [], []
     for doc in tqdm(test[:n // 40]):
         tokens = doc["tokens"]
         ner_ids = doc["ner_ids"]
@@ -87,22 +117,26 @@ cv char 1,2 -> 0.55
 tfidf char (1, 2) -> 0.61
 tfidf char (1, 1) -> 0.42
 """
+
+
 def main():
     data, tag_to_id = get_all_data(change_ner_tags=True, change_ner_ids=True)
     train = data["train"]
     valid = data["valid"]
     test = data["test"]
+    print(train, valid, test)
 
     analyzer = "char"
     ngram_range = (1, 1)
     n = 2_500
     # cv = CountVectorizer(analyzer=analyzer, ngram_range=ngram_range)
     cv = TfidfVectorizer(analyzer=analyzer, ngram_range=ngram_range)
-    X_train, X_test, y_train, y_test = [], [], [], []
+    # X_train, X_test, y_train, y_test = [], [], [], []
     use_linguistical_features = True
 
-    X_train, X_train_str, y_train = build_train()
-    X_test, X_test_str, y_test = build_test()
+    nlp = spacy.load("en_core_web_sm")
+    X_train, X_train_str, y_train = build_train(train, valid, n, use_linguistical_features, nlp)
+    X_test, X_test_str, y_test = build_test(test, n, use_linguistical_features)
 
     X_train, X_train_str, X_test, X_test_str, y_train, y_test = \
         convert(X_train, X_train_str, X_test, X_test_str, y_train, y_test)

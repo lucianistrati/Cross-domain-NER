@@ -11,10 +11,19 @@ nlp = spacy.load("en_core_web_sm")
 
 
 def finetune_spacy_engine():
+    """
+
+    :return:
+    """
     pass
 
 
-def vectorize(cur_labels):
+def vectorize(cur_labels, tag_to_id, spacy_to_dataset_labels):
+    """
+
+    :param cur_labels:
+    :return:
+    """
     new_cur_labels = []
     # print(cur_labels)
     for i in range(len(cur_labels)):
@@ -27,7 +36,12 @@ def vectorize(cur_labels):
     return new_cur_labels
 
 
-def set_gt_dict(cur_gt_labels):
+def set_gt_dict(cur_gt_dict, cur_gt_labels):
+    """
+
+    :param cur_gt_labels:
+    :return:
+    """
     for cur_gt_label in cur_gt_labels:
         s, e = cur_gt_label[1], cur_gt_label[2]
         lbl = cur_gt_label[0]
@@ -35,7 +49,13 @@ def set_gt_dict(cur_gt_labels):
             cur_gt_dict[i] = lbl
     return cur_gt_dict
 
-def set_pred_dict(cur_pred_labels):
+
+def set_pred_dict(cur_pred_dict, cur_pred_labels):
+    """
+
+    :param cur_pred_labels:
+    :return:
+    """
     for cur_pred_label in cur_pred_labels:
         s, e = cur_pred_label[1], cur_pred_label[2]
         lbl = cur_pred_label[0]
@@ -50,6 +70,9 @@ def main():
 
     scores = []
     spacy_to_dataset_labels = {"NUMERIC_VALUE": "NUMERIC", "ORGANIZATION": "ORG"}
+
+    cur_pred_dict = dict()
+    cur_gt_dict = dict()
 
     for doc in tqdm(test):
         spacy_doc = nlp(doc["reconstructed_document"])
@@ -67,11 +90,11 @@ def main():
 
             cur_pred_labels.append((spacy_label, ent.start_char, ent.end_char))
 
-        cur_gt_labels = vectorize(cur_gt_labels)
-        cur_pred_labels = vectorize(cur_pred_labels)
+        cur_gt_labels = vectorize(cur_gt_labels, tag_to_id, spacy_to_dataset_labels)
+        cur_pred_labels = vectorize(cur_pred_labels, tag_to_id, spacy_to_dataset_labels)
 
-        cur_pred_dict = set_pred_dict(cur_pred_labels)
-        cur_gt_dict = set_gt_dict(cur_gt_labels)
+        cur_pred_dict = set_pred_dict(cur_pred_dict, cur_pred_labels)
+        cur_gt_dict = set_gt_dict(cur_gt_dict, cur_gt_labels)
 
         # print(len(cur_gt_dict), len(cur_pred_dict))
 
@@ -102,7 +125,6 @@ def main():
         scores.append(f1_score(final_pred_labels, final_gt_labels, average="weighted"))
 
     print(mean(scores))
-
 
 
 if __name__ == "__main__":

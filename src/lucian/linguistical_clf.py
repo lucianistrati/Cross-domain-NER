@@ -25,10 +25,23 @@ import pdb
 
 
 def document_preprocess(document):
+    """
+
+    :param document:
+    :return:
+    """
     return word_tokenize(document)
 
 
 def ensemble_voting(X_train, y_train, X_test, y_test):
+    """
+
+    :param X_train:
+    :param y_train:
+    :param X_test:
+    :param y_test:
+    :return:
+    """
     estimators = [
         ("svc", SVC(class_weight="balanced")),
         ("random_forest", RandomForestClassifier(class_weight="balanced")),
@@ -43,6 +56,14 @@ def ensemble_voting(X_train, y_train, X_test, y_test):
 
 
 def train_classifier_head(X_train, y_train, X_test, y_test):
+    """
+
+    :param X_train:
+    :param y_train:
+    :param X_test:
+    :param y_test:
+    :return:
+    """
     clfs = [
         ("logistic", SVC(class_weight="balanced")),
         ("random_forest", RandomForestClassifier(class_weight="balanced")),
@@ -61,6 +82,12 @@ def train_classifier_head(X_train, y_train, X_test, y_test):
 
 
 def embed(text, word2vec_model):
+    """
+
+    :param text:
+    :param word2vec_model:
+    :return:
+    """
     try:
         vector = word2vec_model.wv[document_preprocess(text)]
         vector = np.mean(vector, axis=0)
@@ -71,6 +98,12 @@ def embed(text, word2vec_model):
 
 
 def create_train_test_data(data, word2vec_model):
+    """
+
+    :param data:
+    :param word2vec_model:
+    :return:
+    """
     train = data["train"]
     valid = data["valid"]
     test = data["test"]
@@ -105,6 +138,14 @@ def create_train_test_data(data, word2vec_model):
 
 
 def classifier_experiment(X_train, y_train, X_test, y_test):
+    """
+
+    :param X_train:
+    :param y_train:
+    :param X_test:
+    :param y_test:
+    :return:
+    """
     train_classifier_head(X_train, y_train, X_test, y_test)
     ensemble_voting(X_train, y_train, X_test, y_test)
 
