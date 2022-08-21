@@ -1,5 +1,6 @@
 from used_repos.personal.aggregated_personal_repos.Cross_domain_NER.src.lucian.linguistical_feat_extractor import \
     get_paper_features
+from typing import Dict, List, Set, Tuple, Optional, Any, Callable, NoReturn, Union, Mapping, Sequence, Iterable
 from used_repos.personal.aggregated_personal_repos.Cross_domain_NER.src.common.util import get_all_data, get_data
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from stringkernels.kernels import polynomial_string_kernel
