@@ -115,7 +115,7 @@ def load_nlp():
     return nlp
 
 
-def load_all_stopwords(nlp):
+def load_all_stopwords(nlp: spacy.lang):
     """
 
     :param nlp:
@@ -125,7 +125,7 @@ def load_all_stopwords(nlp):
     return all_stopwords
 
 
-def is_there_a_language(text, all_languages: List[str]):
+def is_there_a_language(text: str, all_languages: List[str]):
     """
 
     :param text:
@@ -138,7 +138,7 @@ def is_there_a_language(text, all_languages: List[str]):
     return False
 
 
-def might_be_feminine_surname(text):
+def might_be_feminine_surname(text: str):
     """
 
     :param text:
@@ -148,7 +148,7 @@ def might_be_feminine_surname(text):
     return text.endswith("ei") or text.endswith("a")
 
 
-def get_stopwords_pct(text, all_stopwords: List[str]):
+def get_stopwords_pct(text: str, all_stopwords: List[str]):
     """
 
     :param text:
@@ -159,7 +159,7 @@ def get_stopwords_pct(text, all_stopwords: List[str]):
     return len(tokens.intersection(all_stopwords)) / len(tokens)
 
 
-def count_letters(target):
+def count_letters(target: str):
     """
 
     :param target:
@@ -168,7 +168,7 @@ def count_letters(target):
     return len(target)
 
 
-def get_phrase_len(phrase):
+def get_phrase_len(phrase: str):
     """
 
     :param phrase:
@@ -177,7 +177,7 @@ def get_phrase_len(phrase):
     return len(phrase)
 
 
-def get_num_pos_tags(sentence, tokens=None):
+def get_num_pos_tags(sentence: str, tokens: List[str] = None):
     """
 
     :param sentence:
@@ -190,7 +190,7 @@ def get_num_pos_tags(sentence, tokens=None):
     return len(set(pos_tags)) / len(tokens)
 
 
-def get_word_position_in_phrase(phrase, start_offset):
+def get_word_position_in_phrase(phrase: str, start_offset: int):
     """
 
     :param phrase:
@@ -200,7 +200,7 @@ def get_word_position_in_phrase(phrase, start_offset):
     return start_offset / len(phrase)
 
 
-def get_phrase_num_tokens(phrase):
+def get_phrase_num_tokens(phrase: str):
     """
 
     :param phrase:
@@ -209,7 +209,7 @@ def get_phrase_num_tokens(phrase):
     return len(word_tokenize(phrase))
 
 
-def has_money_tag(text):
+def has_money_tag(text: str):
     """
 
     :param text:
@@ -222,7 +222,7 @@ def has_money_tag(text):
     return False
 
 
-def starts_with_capital_letter(word):
+def starts_with_capital_letter(word: str):
     """
 
     :param word:
@@ -233,7 +233,7 @@ def starts_with_capital_letter(word):
     return False
 
 
-def get_len(text):
+def get_len(text: str):
     """
 
     :param text:
@@ -242,7 +242,7 @@ def get_len(text):
     return len(text)
 
 
-def get_capital_letters_pct(text):
+def get_capital_letters_pct(text: str):
     """
 
     :param text:
@@ -251,7 +251,7 @@ def get_capital_letters_pct(text):
     return len([c for c in text if c in string.ascii_uppercase]) / len(text)
 
 
-def get_roman_numerals_pct(text):
+def get_roman_numerals_pct(text: str):
     """
 
     :param text:
@@ -261,7 +261,7 @@ def get_roman_numerals_pct(text):
     return len([c for c in text if c in roman_numerals]) / len(text)
 
 
-def get_digits_pct(text):
+def get_digits_pct(text: str):
     """
 
     :param text:
@@ -270,7 +270,7 @@ def get_digits_pct(text):
     return len([c for c in text if c in string.digits]) / len(text)
 
 
-def get_punctuation_pct(text):
+def get_punctuation_pct(text: str):
     """
 
     :param text:
@@ -279,7 +279,7 @@ def get_punctuation_pct(text):
     return len([c for c in text if c in string.punctuation]) / len(text)
 
 
-def get_dash_pct(text):
+def get_dash_pct(text: str):
     """
 
     :param text:
@@ -288,7 +288,7 @@ def get_dash_pct(text):
     return len([c for c in text if c == "-"]) / len(text)
 
 
-def get_spaces_pct(text):
+def get_spaces_pct(text: str):
     """
 
     :param text:
@@ -297,7 +297,7 @@ def get_spaces_pct(text):
     return len([c for c in text if c == " "]) / len(text)
 
 
-def get_slashes_pct(text):
+def get_slashes_pct(text: str):
     """
 
     :param text:
@@ -306,7 +306,7 @@ def get_slashes_pct(text):
     return len([c for c in text if c == "/" or c == "\\"]) / len(text)
 
 
-def get_text_similarity(text_1, text_2):
+def get_text_similarity(text_1: str, text_2: str):
     """
 
     :param text_1:
@@ -316,7 +316,7 @@ def get_text_similarity(text_1, text_2):
     pass
 
 
-def get_dots_pct(text):
+def get_dots_pct(text: str):
     """
 
     :param text:
@@ -325,7 +325,7 @@ def get_dots_pct(text):
     return len([c for c in text if c == "."]) / len(text)
 
 
-def count_capital_words(text, tokens=None):
+def count_capital_words(text: str, tokens: List[str] = None):
     """
 
     :param text:
@@ -336,7 +336,7 @@ def count_capital_words(text, tokens=None):
     return sum(map(str.isupper, tokens))
 
 
-def count_punctuations(text):
+def count_punctuations(text: str):
     """
 
     :param text:
@@ -351,7 +351,7 @@ def count_punctuations(text):
     return 0.0
 
 
-def get_word_frequency(target, tokens=None):
+def get_word_frequency(target: str, tokens: List[str] = None):
     """
 
     :param target:
@@ -362,7 +362,7 @@ def get_word_frequency(target, tokens=None):
     return mean([word_frequency(token, "en") for token in tokens])
 
 
-def count_sws(text, tokens=None, stop_words=List[str]):
+def count_sws(text: str, tokens: List[str] = None, stop_words: List[str] = None):
     """
 
     :param text:
@@ -372,10 +372,12 @@ def count_sws(text, tokens=None, stop_words=List[str]):
     """
     if tokens is None:
         tokens = word_tokenize(text)
+    if stop_words is None:
+        stop_words = load_stopwords()
     return len([tok for tok in tokens if tok.lower() in stop_words])
 
 
-def get_sws_pct(text):
+def get_sws_pct(text: str):
     """
 
     :param text:
@@ -389,7 +391,7 @@ encoder_dict = dict()
 encoder_cnt = 0
 
 
-def get_pos_tags(token, doc, nlp_doc, index):
+def get_pos_tags(token: str, doc: str, nlp_doc: spacy.doc, index: int):
     """
 
 
@@ -418,7 +420,7 @@ def get_pos_tags(token, doc, nlp_doc, index):
     return feats
 
 
-def get_dep_tags(token, doc, nlp_doc, index):
+def get_dep_tags(token: str, doc: str, nlp_doc: spacy.doc, index: int):
     """
 
     :param token:
@@ -446,7 +448,7 @@ def get_dep_tags(token, doc, nlp_doc, index):
     return feats
 
 
-def get_ner_tags(token, doc, nlp_doc, index):
+def get_ner_tags(token: str, doc: str, nlp_doc: spacy.doc, index: int):
     """
 
     :param token:
@@ -475,7 +477,7 @@ def get_ner_tags(token, doc, nlp_doc, index):
     return feats
 
 
-def get_paper_features(token, document, index, nlp):
+def get_paper_features(token: str, document: str, index: int, nlp: spacy.lang):
     """
 
     :param token:

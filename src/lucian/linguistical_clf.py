@@ -25,7 +25,7 @@ import nltk
 import pdb
 
 
-def document_preprocess(document):
+def document_preprocess(document: str):
     """
 
     :param document:
@@ -34,7 +34,7 @@ def document_preprocess(document):
     return word_tokenize(document)
 
 
-def ensemble_voting(X_train, y_train, X_test, y_test):
+def ensemble_voting(X_train: np.ndarrray, y_train: np.ndarrray, X_test: np.ndarrray, y_test: np.ndarrray):
     """
 
     :param X_train:
@@ -56,7 +56,7 @@ def ensemble_voting(X_train, y_train, X_test, y_test):
     print("Ensemble clf score:", f1_score(y_pred, y_test, average="weighted"))
 
 
-def train_classifier_head(X_train, y_train, X_test, y_test):
+def train_classifier_head(X_train: np.ndarrray, y_train: np.ndarrray, X_test: np.ndarrray, y_test: np.ndarrray):
     """
 
     :param X_train:
@@ -82,7 +82,7 @@ def train_classifier_head(X_train, y_train, X_test, y_test):
         print("*" * 10)
 
 
-def embed(text, word2vec_model):
+def embed(text: str, word2vec_model: gensim.models.word2vec.Word2Vec):
     """
 
     :param text:
@@ -98,7 +98,7 @@ def embed(text, word2vec_model):
     return vector
 
 
-def create_train_test_data(data, word2vec_model):
+def create_train_test_data(data: Dict, word2vec_model: gensim.models.word2vec.Word2Vec):
     """
 
     :param data:
@@ -138,7 +138,7 @@ def create_train_test_data(data, word2vec_model):
     return np.array(X_train), np.array(y_train), np.array(X_test), np.array(y_test)
 
 
-def classifier_experiment(X_train, y_train, X_test, y_test):
+def classifier_experiment(X_train: np.ndarrray, y_train: np.ndarrray, X_test: np.ndarrray, y_test: np.ndarrray):
     """
 
     :param X_train:

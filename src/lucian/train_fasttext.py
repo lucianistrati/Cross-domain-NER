@@ -30,7 +30,7 @@ stop_words = set(stopwords.words("english"))
 lemmatizer = WordNetLemmatizer()
 
 
-def document_preprocess(document):
+def document_preprocess(document: str):
     """
 
     :param document:
@@ -64,7 +64,7 @@ def prepare_data():
     print("saved docs")
 
 
-def train_word2vec(docs):
+def train_word2vec(docs: List[str]):
     """
 
     :param docs:
@@ -84,7 +84,7 @@ def load_word2vec():
     return gensim.models.FastText.load("checkpoints/fasttext.model")
 
 
-def ensemble_voting(X_train, y_train, X_test, y_test):
+def ensemble_voting(X_train: np.ndarrray, y_train: np.ndarrray, X_test: np.ndarrray, y_test: np.ndarrray):
     """
 
     :param X_train:
@@ -103,7 +103,7 @@ def ensemble_voting(X_train, y_train, X_test, y_test):
     print("Ensemble clf score:", f1_score(y_pred, y_test, average="weighted"))
 
 
-def train_classifier_head(X_train, y_train, X_test, y_test):
+def train_classifier_head(X_train: np.ndarrray, y_train: np.ndarrray, X_test: np.ndarrray, y_test: np.ndarrray):
     """
 
     :param X_train:
@@ -125,7 +125,7 @@ def train_classifier_head(X_train, y_train, X_test, y_test):
         print("*" * 10)
 
 
-def embed(text, word2vec_model):
+def embed(text: np.ndarrray, word2vec_model: gensim.models.word2vec.Word2Vec):
     """
 
     :param text:
