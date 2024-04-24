@@ -6,6 +6,8 @@ This repository contains code for Cross Domain Named Entity Recognition (NER), a
 
 ## Files
 
+In src/lucian the following relevant files are located:
+
 - `basic_vectorizations_experiment.py`: Python script for conducting experiments using basic vectorization techniques.
 - `conditional_random_fields_model.py`: Python script implementing a Conditional Random Fields (CRF) model for NER.
 - `linguistical_classifier.py`: Python script for implementing a classifier based on linguistic features for NER.
