@@ -45,5 +45,3 @@ python train_word2vec.py
 ```
 
 Feel free to modify and expand this template according to the specific details of your project and any additional information you want to include!
-
-[![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://stand-with-ukraine.pp.ua)
